@@ -2,6 +2,7 @@ const characterSelect = document.querySelector("#characterSelect");
 const scenarioSelect = document.querySelector("#scenarioSelect");
 const characters = document.querySelectorAll(".character");
 const backgroundTrack = document.querySelector(".background-track");
+const backgroundMusic = document.querySelector("#backgroundMusic");
 
 const requiredImages = [
   "assets/backgrounds/fondo-loop-1.png",
@@ -128,6 +129,13 @@ scenarioSelect.addEventListener("change", () => {
 });
 
 characterSelect.addEventListener("change", applyCharacterSelection);
+
+function startBackgroundMusic() {
+  backgroundMusic.play().catch(() => {});
+}
+
+document.addEventListener("pointerdown", startBackgroundMusic, { once: true });
+document.addEventListener("keydown", startBackgroundMusic, { once: true });
 
 document.body.classList.add("is-running-scene");
 applyScenario(scenarioSelect.value);
