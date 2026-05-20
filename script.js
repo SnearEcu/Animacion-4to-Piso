@@ -3,6 +3,9 @@ const scenarioSelect = document.querySelector("#scenarioSelect");
 const characters = document.querySelectorAll(".character");
 const backgroundTrack = document.querySelector(".background-track");
 const backgroundMusic = document.querySelector("#backgroundMusic");
+const loadingScreen = document.querySelector("#loadingScreen");
+const loadingButton = document.querySelector("#loadingButton");
+const loadingMeter = document.querySelector("#loadingMeter");
 
 const requiredImages = [
   "assets/backgrounds/fondo-loop-1.png",
@@ -25,6 +28,7 @@ const requiredImages = [
   "assets/backgrounds/transition-seam-2-to-3.png",
   "assets/backgrounds/transition-seam-3-to-4.png",
   "assets/backgrounds/transition-seam-4-to-1.png",
+  "assets/ui/loading-stage.png",
   "assets/video-run/guitarist-1.png",
   "assets/video-run/singer-fixed.png",
   "assets/video-run/drummer-fixed.png",
@@ -114,14 +118,51 @@ function applyCharacterSelection() {
 }
 
 function preloadImages() {
+  let loaded = 0;
+
   return Promise.all(
     requiredImages.map((src) => new Promise((resolve, reject) => {
       const image = new Image();
-      image.onload = resolve;
+      image.onload = () => {
+        loaded += 1;
+        loadingMeter.style.width = `${Math.round((loaded / requiredImages.length) * 78)}%`;
+        resolve();
+      };
       image.onerror = reject;
       image.src = src;
     }))
   );
+}
+
+function preloadMusic() {
+  if (backgroundMusic.readyState >= 3) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const done = () => resolve();
+
+    backgroundMusic.addEventListener("canplaythrough", done, { once: true });
+    backgroundMusic.addEventListener("canplay", done, { once: true });
+    backgroundMusic.load();
+    window.setTimeout(done, 4500);
+  });
+}
+
+function setLoadingReady() {
+  loadingMeter.style.width = "100%";
+  loadingButton.disabled = false;
+  loadingButton.textContent = "Entrar";
+  loadingScreen.classList.add("is-ready");
+}
+
+function hideLoadingScreen() {
+  loadingScreen.classList.add("is-leaving");
+  document.body.classList.remove("is-loading");
+
+  window.setTimeout(() => {
+    loadingScreen.hidden = true;
+  }, 620);
 }
 
 scenarioSelect.addEventListener("change", () => {
@@ -130,17 +171,33 @@ scenarioSelect.addEventListener("change", () => {
 
 characterSelect.addEventListener("change", applyCharacterSelection);
 
-function startBackgroundMusic() {
-  backgroundMusic.play().catch(() => {});
+async function startBackgroundMusic() {
+  if (loadingButton.disabled) {
+    return;
+  }
+
+  try {
+    await backgroundMusic.play();
+    hideLoadingScreen();
+  } catch {
+    loadingButton.textContent = "Toca para entrar";
+  }
 }
 
-document.addEventListener("pointerdown", startBackgroundMusic, { once: true });
-document.addEventListener("keydown", startBackgroundMusic, { once: true });
+loadingButton.addEventListener("click", startBackgroundMusic);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    startBackgroundMusic();
+  }
+});
 
 document.body.classList.add("is-running-scene");
 applyScenario(scenarioSelect.value);
 applyCharacterSelection();
 
-preloadImages().catch(() => {
-  document.body.classList.add("asset-missing");
-});
+Promise.all([preloadImages(), preloadMusic()])
+  .then(setLoadingReady)
+  .catch(() => {
+    loadingButton.disabled = false;
+    loadingButton.textContent = "Entrar";
+  });

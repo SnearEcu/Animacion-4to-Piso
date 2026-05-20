@@ -6,7 +6,7 @@
     <title>Banda Pixel Animada</title>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body>
+  <body class="is-loading">
     <audio id="backgroundMusic" src="Intento.mp3" loop preload="auto"></audio>
 
     <main class="app-shell">
@@ -117,6 +117,19 @@
 
       </section>
     </main>
+
+    <section class="loading-screen" id="loadingScreen" aria-label="Cargando experiencia">
+      <div class="loading-panel" data-start="0">
+        <span class="loading-kicker">4to Piso</span>
+        <h1>Banda Pixel Animada</h1>
+        <div class="loading-meter" aria-hidden="true">
+          <span id="loadingMeter"></span>
+        </div>
+        <button class="loading-button" id="loadingButton" type="button" disabled>
+          Cargando...
+        </button>
+      </div>
+    </section>
 
     <script src="script.js"></script>
   </body>
