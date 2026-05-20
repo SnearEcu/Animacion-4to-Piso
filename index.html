@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banda Pixel Animada</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="stage" aria-label="Banda pixel art animada">
+        <div class="background-stage" aria-hidden="true">
+          <div class="background-track">
+            <img src="assets/backgrounds/fondo-loop-1.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-2.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-3.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-4.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-1.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-2.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-3.png" alt="">
+            <img src="assets/backgrounds/fondo-loop-4.png" alt="">
+          </div>
+        </div>
+
+        <div class="band" id="band">
+          <div class="band-run-overlay" aria-hidden="true">
+            <div class="band-run-strip"></div>
+          </div>
+
+          <article
+            class="character"
+            data-character="guitarist-1"
+            style="--delay: 0ms; --w: 432; --h: 650; --scale: .5;"
+          >
+            <div class="shadow"></div>
+            <div class="mask">
+              <span class="video-run-strip"></span>
+            </div>
+            <h2>Guitarrista 1</h2>
+          </article>
+
+          <article
+            class="character"
+            data-character="singer"
+            style="--delay: 120ms; --w: 410; --h: 650; --scale: .5;"
+          >
+            <div class="shadow"></div>
+            <div class="mask">
+              <span class="video-run-strip"></span>
+            </div>
+            <h2>Cantante</h2>
+          </article>
+
+          <article
+            class="character"
+            data-character="drummer"
+            style="--delay: 240ms; --w: 350; --h: 650; --scale: .5;"
+          >
+            <div class="shadow"></div>
+            <div class="mask">
+              <span class="video-run-strip"></span>
+            </div>
+            <h2>Baterista</h2>
+          </article>
+
+          <article
+            class="character"
+            data-character="guitarist-2"
+            style="--delay: 360ms; --w: 388; --h: 650; --scale: .5;"
+          >
+            <div class="shadow"></div>
+            <div class="mask">
+              <span class="video-run-strip"></span>
+            </div>
+            <h2>Guitarrista 2</h2>
+          </article>
+
+          <article
+            class="character"
+            data-character="bassist"
+            style="--delay: 480ms; --w: 465; --h: 650; --scale: .5;"
+          >
+            <div class="shadow"></div>
+            <div class="mask">
+              <span class="video-run-strip"></span>
+            </div>
+            <h2>Bajista</h2>
+          </article>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Controles de animación">
+        <label class="control-group">
+          <span>Escenario</span>
+          <select id="scenarioSelect">
+            <option value="continuous">Recorrido continuo</option>
+            <option value="main">Solo 4to Piso</option>
+            <option value="sunset">Solo parque atardecer</option>
+            <option value="flowerPark">Solo parque luces</option>
+            <option value="walkwayPark">Solo parque pasarela</option>
+          </select>
+        </label>
+
+        <label class="control-group">
+          <span>Personaje</span>
+          <select id="characterSelect">
+            <option value="all">Todos</option>
+            <option value="guitarist-1">Guitarrista 1</option>
+            <option value="singer">Cantante</option>
+            <option value="drummer">Baterista</option>
+            <option value="guitarist-2">Guitarrista 2</option>
+            <option value="bassist">Bajista</option>
+          </select>
+        </label>
+
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
