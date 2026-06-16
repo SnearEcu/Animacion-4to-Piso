@@ -13,11 +13,17 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
   color: var(--ink);
   background: #eceff3;
+  overflow-x: hidden;
 }
 
 body.is-loading {
@@ -31,6 +37,7 @@ body.is-loading .app-shell {
 .app-shell {
   display: grid;
   min-height: 100vh;
+  min-height: 100dvh;
   grid-template-rows: 1fr auto;
 }
 
@@ -164,6 +171,7 @@ body.is-loading .app-shell {
   position: relative;
   display: grid;
   min-height: 74vh;
+  min-height: 74dvh;
   overflow: hidden;
   place-items: end center;
   padding: clamp(18px, 4vw, 46px) clamp(12px, 3vw, 36px) 0;
@@ -453,6 +461,19 @@ body.asset-missing .missing-asset {
   transform: translateX(0);
 }
 
+.band.is-full-band-running .band-run-overlay {
+  opacity: 1;
+}
+
+.band.is-full-band-running .band-run-strip {
+  animation: band-video-run-frames 560ms step-end infinite both;
+}
+
+.band.is-full-band-running .character .mask,
+.band.is-full-band-running .character .shadow {
+  opacity: 0;
+}
+
 .character {
   --cycle: 1200ms;
   --display-w: calc(var(--w) * 1px * var(--scale));
@@ -683,6 +704,11 @@ button {
   font: inherit;
   font-weight: 800;
   box-shadow: 4px 4px 0 var(--ink);
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 select {
@@ -964,40 +990,53 @@ kbd {
 @media (max-width: 980px) {
   .stage {
     min-height: 70vh;
+    min-height: 70dvh;
     padding-right: 0;
     padding-left: 0;
   }
 
   .band {
-    justify-content: start;
-    overflow-x: auto;
+    justify-content: center;
+    overflow: visible;
     padding: 56px 20px 12px;
-    scroll-snap-type: x proximity;
   }
 
   .character {
     --scale: .48 !important;
-    scroll-snap-align: center;
   }
 
   .controls {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
+    gap: 12px;
   }
 
   .game-hud {
+    left: 12px;
     right: 12px;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, .72fr) minmax(0, .72fr) minmax(110px, 1fr);
+    gap: 8px;
   }
 
   .stat-block,
   .energy-block {
     min-width: 0;
-    flex: 1 1 0;
+    padding: 8px 10px;
   }
 
   .cue-card {
-    top: 92px;
+    top: 104px;
+  }
+
+  .note-lane {
+    bottom: clamp(126px, 19vh, 180px);
+  }
+
+  .band-run-overlay {
+    bottom: 12px;
+    width: min(1180px, 190vw);
   }
 
   .button-row {
@@ -1008,6 +1047,7 @@ kbd {
   select,
   .motion-button,
   .game-button {
+    min-width: 0;
     width: 100%;
   }
 
@@ -1017,8 +1057,243 @@ kbd {
   }
 
   .key-hint {
+    grid-column: 1 / -1;
     max-width: none;
     text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .loading-screen {
+    min-height: 100dvh;
+    padding: 14px;
+  }
+
+  .loading-panel {
+    width: min(420px, calc(100vw - 24px));
+    gap: 12px;
+    padding: 20px 18px 22px;
+  }
+
+  .loading-panel h1 {
+    font-size: clamp(2rem, 12vw, 3.15rem);
+    line-height: 1;
+  }
+
+  .stage {
+    min-height: clamp(390px, calc(100dvh - 158px), 680px);
+    padding-top: 10px;
+  }
+
+  .game-hud {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    max-width: none;
+    grid-template-columns: minmax(0, .66fr) minmax(0, .66fr) minmax(104px, 1fr);
+    gap: 6px;
+  }
+
+  .stat-block,
+  .energy-block,
+  .cue-card {
+    border-width: 2px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .stat-block,
+  .energy-block {
+    gap: 3px;
+    padding: 7px 8px;
+  }
+
+  .stat-block span,
+  .energy-block span,
+  .cue-kicker {
+    font-size: 0.58rem;
+  }
+
+  .stat-block strong {
+    font-size: clamp(1rem, 4.4vw, 1.28rem);
+  }
+
+  .energy-track {
+    height: 10px;
+    border-width: 2px;
+  }
+
+  .cue-card {
+    top: 72px;
+    width: min(284px, calc(100vw - 24px));
+    gap: 5px;
+    padding: 9px 12px 11px;
+  }
+
+  .cue-card strong {
+    font-size: clamp(1rem, 5vw, 1.36rem);
+  }
+
+  .cue-meter {
+    height: 5px;
+  }
+
+  .note-lane {
+    bottom: clamp(118px, 23dvh, 168px);
+    height: 50px;
+  }
+
+  .note-token {
+    width: 40px;
+    height: 40px;
+    border-width: 2px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .band {
+    width: 100%;
+    min-width: 0;
+    padding: 138px 0 clamp(30px, 8dvh, 58px);
+    gap: 4px;
+  }
+
+  .character {
+    --scale: .4 !important;
+  }
+
+  .band.is-full-band-running {
+    align-self: end;
+    min-height: clamp(165px, 32dvh, 260px);
+    padding-top: 0;
+    padding-bottom: clamp(32px, 8dvh, 66px);
+  }
+
+  .band.is-full-band-running .character {
+    --scale: .34 !important;
+  }
+
+  .band-run-overlay {
+    bottom: clamp(32px, 8dvh, 66px);
+    width: min(96vw, 560px);
+  }
+
+  .controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px 10px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .control-group {
+    gap: 5px;
+    font-size: 0.68rem;
+  }
+
+  select,
+  button {
+    min-height: 44px;
+    border-width: 2px;
+    border-radius: 7px;
+    box-shadow: 3px 3px 0 var(--ink);
+    font-size: 0.84rem;
+  }
+
+  select {
+    padding-right: 26px;
+    padding-left: 9px;
+  }
+
+  .game-actions {
+    grid-column: 1 / -1;
+    gap: 8px;
+  }
+
+  .game-button {
+    padding: 0 10px;
+  }
+
+  .key-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .stage {
+    min-height: clamp(370px, calc(100dvh - 148px), 620px);
+  }
+
+  .game-hud {
+    grid-template-columns: minmax(0, .62fr) minmax(0, .62fr) minmax(92px, 1fr);
+  }
+
+  .stat-block,
+  .energy-block {
+    padding: 6px;
+  }
+
+  .stat-block span,
+  .energy-block span,
+  .cue-kicker {
+    font-size: 0.52rem;
+  }
+
+  .band {
+    padding-top: 128px;
+  }
+
+  .character {
+    --scale: .34 !important;
+  }
+
+  .band.is-full-band-running .character {
+    --scale: .28 !important;
+  }
+
+  .controls {
+    gap: 8px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  select {
+    padding-right: 22px;
+    padding-left: 8px;
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 340px) {
+  select {
+    padding-right: 20px;
+    padding-left: 7px;
+    font-size: 0.66rem;
+  }
+}
+
+@media (max-height: 620px) and (max-width: 700px) {
+  .stage {
+    min-height: 340px;
+  }
+
+  .cue-card {
+    top: 64px;
+  }
+
+  .band {
+    padding-top: 116px;
+    padding-bottom: 26px;
+  }
+
+  .band.is-full-band-running {
+    min-height: 148px;
+    padding-bottom: 24px;
+  }
+
+  .band-run-overlay {
+    bottom: 24px;
+    width: min(88vw, 460px);
   }
 }
 

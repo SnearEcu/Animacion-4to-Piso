@@ -11,6 +11,8 @@
 
     <main class="app-shell">
       <section class="stage" aria-label="Banda pixel art animada">
+        <p class="missing-asset" id="missingAsset" role="status"></p>
+
         <div class="background-stage" aria-hidden="true">
           <div class="background-track">
             <img src="assets/backgrounds/fondo-loop-1.png" alt="">
@@ -89,6 +91,31 @@
             <h2>Bajista</h2>
           </article>
         </div>
+
+        <aside class="game-hud" aria-label="Marcador del ensayo">
+          <div class="stat-block">
+            <span>Puntaje</span>
+            <strong id="scoreValue">0</strong>
+          </div>
+          <div class="stat-block">
+            <span>Combo</span>
+            <strong id="comboValue">0x</strong>
+          </div>
+          <div class="energy-block">
+            <span>Energia</span>
+            <div class="energy-track" aria-hidden="true">
+              <span id="energyValue"></span>
+            </div>
+          </div>
+        </aside>
+
+        <aside class="cue-card" id="cueCard" aria-live="polite">
+          <span class="cue-kicker" id="cueKicker">Ensayo</span>
+          <strong id="cueText">Pulsa Iniciar</strong>
+          <span class="cue-meter" id="cueMeter" aria-hidden="true"></span>
+        </aside>
+
+        <div class="note-lane" id="noteLane" aria-hidden="true"></div>
       </section>
 
       <section class="controls" aria-label="Controles de animación">
@@ -115,6 +142,14 @@
           </select>
         </label>
 
+        <div class="game-actions" aria-label="Acciones del ensayo">
+          <button class="game-button is-primary" id="startGameButton" type="button">Iniciar</button>
+          <button class="game-button" id="runButton" type="button" disabled>Correr</button>
+        </div>
+
+        <p class="key-hint">
+          <kbd>Enter</kbd> inicia o reinicia · <kbd>3</kbd> marca correr
+        </p>
       </section>
     </main>
 
